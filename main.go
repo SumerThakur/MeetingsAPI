@@ -39,6 +39,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"message": "GET method requested"}`))
+		
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "POST method requested"}`))
@@ -53,6 +54,16 @@ func scheduleMeeting(w http.ResponseWriter, r *http.Request) {
 
 	// Change the response depending on the method being requested
 	switch r.Method {
+	case "GET"
+		w.WriteHeader(http.StatusOK)
+		cur, err := collection.Find(context.TODO(), bson.M{})
+
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		defer cur.Close(context.TODO())
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "POST method requested"}`))
